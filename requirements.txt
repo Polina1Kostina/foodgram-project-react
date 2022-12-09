@@ -1,0 +1,5 @@
+requests
+django
+psycopg2-binary==2.8.6
+python-dotenv
+djoser djangorestframework-simplejwt==4.7.2 
