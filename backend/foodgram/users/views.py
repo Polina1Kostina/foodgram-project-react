@@ -12,3 +12,5 @@ class UserProfileListCreateView(ListCreateAPIView):
     def perform_create(self, serializer):
         user = self.request.user
         serializer.save(user=user)
+
+
