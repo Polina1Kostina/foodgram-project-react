@@ -47,7 +47,9 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'users',
     'api',
+    'recipes',
     'colorfield',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -146,26 +148,22 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = "users.User"
 
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated', 
-    ],
-
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 1,
-}
-
-
-### ПОСМОТРИ НАДО ЛИ УДАЛЯТЬ !!!!!!!!!
-SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=7),
-    'AUTH_HEADER_TYPES': ('Bearer',),
+    'PAGE_SIZE': 6,
 }
 
 DJOSER = {
-    'users': 'users.serializers.UserRegistrationSerializer'
-}
+    'PERMISSIONS': {
+        'user_list': ['api.permissions.IsAdminAuthorOrReadOnly'],
+        'user': ['rest_framework.permissions.IsAuthenticated'],
+    },
+    'HIDE_USERS': False,
+    'SERIALIZERS': {
+        'user': 'api.serializers.AuthorSerializer',
+        'current_user': 'api.serializers.AuthorSerializer'}
+    }

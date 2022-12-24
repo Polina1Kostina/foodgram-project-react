@@ -7,3 +7,5 @@ django-colorfield
 djoser
 gunicorn==20.0.4
 drf_multiple_serializer==0.2.3
+reportlab
+django-filter

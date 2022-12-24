@@ -3,9 +3,10 @@ from django.contrib.auth.models import AbstractUser
 
 
 class User(AbstractUser):
+    """Пользователи"""
     USER = 'user'
     ADMIN = 'admin'
-    
+
     USERNAME_FIELD = 'email'
 
     REQUIRED_FIELDS = ['username', 'first_name', 'last_name', ]
@@ -46,7 +47,6 @@ class User(AbstractUser):
         null=False,
     )
 
-
     class Meta:
         ordering = ('id',)
         verbose_name = 'Пользователь'
@@ -59,3 +59,29 @@ class User(AbstractUser):
     @property
     def is_user(self):
         return self.role == User.USER
+
+
+class Subscription(models.Model):
+    """Подписки на пользователей"""
+    user = models.ForeignKey(
+        User,
+        verbose_name='Пользователь',
+        on_delete=models.CASCADE,
+        related_name='subscrib'
+    )
+    subscription = models.ForeignKey(
+        User,
+        verbose_name='Подписка',
+        on_delete=models.CASCADE,
+        related_name='subscription'
+    )
+
+    class Meta:
+        ordering = ('user',)
+        verbose_name = 'Подписка'
+        verbose_name_plural = 'Подписки'
+        constraints = [
+            models.UniqueConstraint(
+                fields=('user', 'subscription'), name='unique subscription'
+            )
+        ]
