@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models import (
-    Tag, Ingredient, Recipe, IngridientRecipe, ShoppingCart, FavoriteRecipe)
+    Tag, Ingredient, Recipe, IngridientRecipe, ShoppingCart, FavoriteRecipe,
+    TagRecipe)
 
 
 @admin.register(Tag)
@@ -56,6 +57,18 @@ class IngridientRecipeAdmin(admin.ModelAdmin):
     list_display = (
         'amount',
         'ingredients',
+        'recipe'
+    )
+    search_fields = ('recipe',)
+    list_filter = ('recipe',)
+    list_editable = ('recipe',)
+    empty_value_display = '-пусто-'
+
+
+@admin.register(TagRecipe)
+class IngridientRecipeAdmin(admin.ModelAdmin):
+    list_display = (
+        'tag',
         'recipe'
     )
     search_fields = ('recipe',)

@@ -16,9 +16,11 @@ router.register(
 
 
 urlpatterns = [
-    path('recipes/download_shopping_cart/', download_shopping_cart),
-    path('recipes/<recipe_id>/shopping_cart/', shopping_cart),
-    path('recipes/<recipe_id>/favorite/', favorite),
+    path('recipes/', include([
+        path('download_shopping_cart/', download_shopping_cart),
+        path('<recipe_id>/shopping_cart/', shopping_cart),
+        path('<recipe_id>/favorite/', favorite),
+    ])),
     path('users/<subscription_id>/subscribe/', subscription),
     path('', include(router.urls)),
     path('', include('djoser.urls')),

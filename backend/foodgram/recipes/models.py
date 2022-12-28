@@ -1,6 +1,7 @@
 from django.db import models
 from colorfield.fields import ColorField
 from users.models import User
+from django.core.validators import RegexValidator, MinValueValidator
 
 
 class Tag(models.Model):
@@ -9,8 +10,17 @@ class Tag(models.Model):
     name = models.CharField(
         max_length=255,
         blank=False,
-        unique=True)
-    color = ColorField(default='#FF0000')
+        unique=True,
+        validators=[
+            RegexValidator(
+                regex='^[А-Яа-яЁё]*$',
+                message='Название может состоять только из русских букв',
+            )])
+    color = ColorField(default='#FF0000', validators=[
+            RegexValidator(
+                regex='^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$',
+                message='Код цвета передан в неверном формате',
+            )])
     slug = models.SlugField(
         max_length=150,
         blank=False,
@@ -67,9 +77,14 @@ class Recipe(models.Model):
     name = models.CharField(max_length=255)
     image = models.ImageField(upload_to='recipes/', null=True, blank=True)
     text = models.TextField()
-    ingredients = models.ManyToManyField(Ingredient, through=IngridientRecipe,)
+    ingredients = models.ManyToManyField(Ingredient, through=IngridientRecipe)
     tags = models.ManyToManyField(Tag, through='TagRecipe', blank=False)
-    cooking_time = models.PositiveIntegerField()
+    cooking_time = models.PositiveIntegerField(
+        verbose_name='Время приготовления',
+        validators=[
+            MinValueValidator(
+                1, message='Укажите время приготовления больше 1 минуты'),
+            ])
     pub_date = models.DateTimeField('Дата публикации', auto_now_add=True)
 
     class Meta:
@@ -98,7 +113,8 @@ class ShoppingCart(models.Model):
     """Список покупок"""
     user = models.ForeignKey(
         User,
-        on_delete=models.CASCADE)
+        on_delete=models.CASCADE,
+        related_name='shopuser')
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,
