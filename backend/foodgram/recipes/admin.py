@@ -66,7 +66,7 @@ class IngridientRecipeAdmin(admin.ModelAdmin):
 
 
 @admin.register(TagRecipe)
-class IngridientRecipeAdmin(admin.ModelAdmin):
+class TagRecipeAdmin(admin.ModelAdmin):
     list_display = (
         'tag',
         'recipe'
