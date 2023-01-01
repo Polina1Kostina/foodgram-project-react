@@ -44,6 +44,8 @@ jobs:
           context: ./backend/foodgram/
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/foodgram_web:v1
+      - name: Push to Docker Hub
+        uses: docker/build-push-action@v2
         with:
           context: ./frontend/
           push: true
