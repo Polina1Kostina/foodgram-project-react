@@ -136,7 +136,8 @@ class SubscriptionReadViewSet(viewsets.ReadOnlyModelViewSet):
 def subscription(request, subscription_id):
     """Добавляет и удаляет пользователя из списка подписок"""
     if request.method == 'POST':
-        serializer = SubscriptionReadSerializer(data={
+        serializer = SubscriptionReadSerializer(
+            data={
                 'user': request.user.id,
                 'subscription': subscription_id
             })

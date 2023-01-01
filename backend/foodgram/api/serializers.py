@@ -23,7 +23,7 @@ class IngredientRecipeSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = IngridientRecipe
-        fields = ('id', 'amount',  'name', 'measurement_unit')
+        fields = ('id', 'amount', 'name', 'measurement_unit')
 
 
 class AuthorSerializer(serializers.HyperlinkedModelSerializer):
@@ -40,7 +40,7 @@ class AuthorSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'username',  'first_name', 'last_name', 'email',
+        fields = ('id', 'username', 'first_name', 'last_name', 'email',
                   'is_subscribed')
 
 

@@ -16,7 +16,9 @@ class Tag(models.Model):
                 regex='^[А-Яа-яЁё]*$',
                 message='Название может состоять только из русских букв',
             )])
-    color = ColorField(default='#FF0000', validators=[
+    color = ColorField(
+        default='#FF0000',
+        validators=[
             RegexValidator(
                 regex='^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$',
                 message='Код цвета передан в неверном формате',
@@ -84,7 +86,7 @@ class Recipe(models.Model):
         validators=[
             MinValueValidator(
                 1, message='Укажите время приготовления больше 1 минуты'),
-            ])
+        ])
     pub_date = models.DateTimeField('Дата публикации', auto_now_add=True)
 
     class Meta:
