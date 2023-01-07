@@ -48,7 +48,7 @@ class RecipeViewSet(ReadWriteSerializerMixin, viewsets.ModelViewSet):
 @login_required
 def download_shopping_cart(request):
     """Скачивает список покупок с необходимыми ингридиентами в формате .txt"""
-    response = HttpResponse(content_type='text/plain')
+    response = HttpResponse(content_type='text/plain, charset=utf8')
     response['Content-Disposition'] = 'attachment; filename=products.txt'
     user = request.user
     recipes = ShoppingCart.objects.filter(user=user)
@@ -156,6 +156,5 @@ class IngredientViewSet(TagViewSet):
     """Отображает список ингридиентов"""
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
-    filter_backends = (DjangoFilterBackend, filters.SearchFilter)
+    filter_backends = (DjangoFilterBackend, filters.SearchFilter,)
     search_fields = ('^name',)
-    pagination_class = None
