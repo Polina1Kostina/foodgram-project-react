@@ -77,7 +77,9 @@ class Recipe(models.Model):
         related_name='author',
         on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
-    image = models.ImageField(upload_to='recipes/', null=True, blank=True)
+    image = models.ImageField(
+        upload_to='static/recipes/',
+        null=True, blank=True)
     text = models.TextField()
     ingredients = models.ManyToManyField(Ingredient, through=IngridientRecipe)
     tags = models.ManyToManyField(Tag, through='TagRecipe', blank=False)

@@ -6,6 +6,7 @@ from recipes.models import (
     FavoriteRecipe)
 from users.models import User, Subscription
 from django.db import transaction
+from drf_base64.fields import Base64ImageField
 
 
 class TagSerializer(serializers.HyperlinkedModelSerializer):
@@ -49,6 +50,7 @@ class RecipeReadSerializer(serializers.ModelSerializer):
     tags = TagSerializer(many=True)
     ingredients = IngredientRecipeSerializer(
         many=True, source='ingridientrecipe_set')
+    image = Base64ImageField()
     is_favorited = serializers.SerializerMethodField()
     is_in_shopping_cart = serializers.SerializerMethodField()
 
@@ -81,6 +83,8 @@ class RecipeWriteSerializer(RecipeReadSerializer):
         queryset=Tag.objects.all(), many=True)
     ingredients = IngredientRecipeSerializer(
         many=True, source='ingridientrecipe_set',)
+    image = Base64ImageField(
+        max_length=None, use_url=True)
 
     def validate_ingredients(self, value):
         for v in value:
