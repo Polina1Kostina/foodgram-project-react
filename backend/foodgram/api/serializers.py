@@ -104,8 +104,8 @@ class RecipeWriteSerializer(RecipeReadSerializer):
         with transaction.atomic():
             sid = transaction.savepoint()
             try:
+                recipe = Recipe.objects.create(**validated_data)
                 for tag_data in tags_data:
-                    recipe = Recipe.objects.create(**validated_data)
                     TagRecipe.objects.create(tag_id=tag_data.id, recipe=recipe)
                 for ingredient_data in ingredients_data:
                     ingredients_id = ingredient_data.pop('ingredients')['id']

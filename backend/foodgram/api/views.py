@@ -45,7 +45,6 @@ class RecipeViewSet(ReadWriteSerializerMixin, viewsets.ModelViewSet):
         serializer.save(author=self.request.user)
 
 
-@permission_classes([OnlyAuthor])
 @login_required
 def download_shopping_cart(request):
     """Скачивает список покупок с необходимыми ингридиентами в формате .txt"""
