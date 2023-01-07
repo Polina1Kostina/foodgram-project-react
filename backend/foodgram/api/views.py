@@ -1,6 +1,7 @@
 from rest_framework import viewsets, mixins, status
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import (
+    api_view, permission_classes, authentication_classes)
 from django.contrib.auth.decorators import login_required
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
@@ -18,6 +19,7 @@ from .serializers import (
 from .permissions import IsAdminAuthorOrReadOnly, OnlyAuthor, IsAdminOrReadOnly
 from .filters import RecipeFilter
 from rest_framework import filters
+from rest_framework.authentication import TokenAuthentication
 
 
 class TagViewSet(mixins.ListModelMixin, mixins.CreateModelMixin,
@@ -45,6 +47,7 @@ class RecipeViewSet(ReadWriteSerializerMixin, viewsets.ModelViewSet):
         serializer.save(author=self.request.user)
 
 
+@authentication_classes([TokenAuthentication, ])
 @login_required
 def download_shopping_cart(request):
     """Скачивает список покупок с необходимыми ингридиентами в формате .txt"""
@@ -67,6 +70,7 @@ def download_shopping_cart(request):
     return response
 
 
+@authentication_classes([TokenAuthentication, ])
 @api_view(['DELETE', 'POST'])
 @permission_classes([OnlyAuthor])
 def shopping_cart(request, recipe_id):
@@ -93,6 +97,7 @@ def shopping_cart(request, recipe_id):
         return Response()
 
 
+@authentication_classes([TokenAuthentication, ])
 @api_view(['DELETE', 'POST'])
 @permission_classes([OnlyAuthor])
 def favorite(request, recipe_id):
@@ -121,6 +126,7 @@ def favorite(request, recipe_id):
         return Response()
 
 
+@authentication_classes([TokenAuthentication, ])
 class SubscriptionReadViewSet(viewsets.ReadOnlyModelViewSet):
     """Отображает список подписок"""
     serializer_class = SubscriptionReadSerializer
@@ -131,6 +137,7 @@ class SubscriptionReadViewSet(viewsets.ReadOnlyModelViewSet):
         return new_queryset
 
 
+@authentication_classes([TokenAuthentication, ])
 @api_view(['DELETE', 'POST'])
 @permission_classes([OnlyAuthor])
 def subscription(request, subscription_id):
