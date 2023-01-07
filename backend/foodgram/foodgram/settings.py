@@ -128,10 +128,10 @@ REST_FRAMEWORK = {
 
 DJOSER = {
     'PERMISSIONS': {
-        'user_list': ['djoser.permissions.CurrentUserOrAdminOrReadOnly'],
+        'HIDE_USERS': False,
+        'user_list': ['rest_framework.permissions.AllowAny'],
         'user': ['djoser.permissions.CurrentUserOrAdminOrReadOnly'],
     },
-    'HIDE_USERS': False,
     'SERIALIZERS': {
         'user': 'api.serializers.AuthorSerializer',
         'current_user': 'api.serializers.AuthorSerializer'}}
