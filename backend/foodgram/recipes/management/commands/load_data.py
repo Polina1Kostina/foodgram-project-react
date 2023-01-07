@@ -20,7 +20,7 @@ class Command(BaseCommand):
             'r',
             encoding='utf-8'
         ) as file:
-            reader = csv.DictReader(file)
+            reader = csv.reader(file)
             for row in reader:
                 _, created = Ingredient.objects.get_or_create(
                     name=row[0],
