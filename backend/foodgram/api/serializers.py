@@ -31,8 +31,8 @@ class AuthorSerializer(serializers.HyperlinkedModelSerializer):
     is_subscribed = serializers.SerializerMethodField()
 
     def get_is_subscribed(self, obj):
-        user = self.context['request'].user
         try:
+            user = self.context['request'].user
             is_subscribed = user.subscrib.filter(
                 subscription=obj.id).exists()
             return is_subscribed
