@@ -10,8 +10,6 @@ services:
   web:
     image: p0lina/foodgram_web:v1  
     restart: always
-    ports:
-      - 8000:8000
     volumes:
       - static_value:/app/static/
       - media_value:/app/media/
@@ -23,7 +21,7 @@ services:
   frontend:
     image: p0lina/foodgram_front:v1
     volumes:
-      - ../frontend/:/app/result_build/
+      - ./frontend/:/app/result_build/
     links:
       - web
 
@@ -33,10 +31,10 @@ services:
       - 80:80
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
-      - static_value:/var/html/backend-static/
-      - media_value:/var/html/backend-media/
-      - ../frontend/build:/usr/share/nginx/html/
+      - ./frontend/build:/usr/share/nginx/html
       - ../docs/:/usr/share/nginx/html/api/docs/
+      - static_value:/var/html/static/
+      - media_value:/var/html/media/
     depends_on:
       - web
 
