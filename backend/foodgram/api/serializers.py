@@ -55,8 +55,8 @@ class RecipeReadSerializer(serializers.ModelSerializer):
     is_in_shopping_cart = serializers.SerializerMethodField()
 
     def get_is_favorited(self, obj):
-        user = self.context['request'].user
         try:
+            user = self.context['request'].user
             is_favorited = user.userfavorite.filter(
                 recipe=obj.id).exists()
             return is_favorited
@@ -64,8 +64,8 @@ class RecipeReadSerializer(serializers.ModelSerializer):
             return False
 
     def get_is_in_shopping_cart(self, obj):
-        user = self.context['request'].user
         try:
+            user = self.context['request'].user
             is_in_shopping_cart = user.shopuser.filter(
                 recipe=obj.id).exists()
             return is_in_shopping_cart
