@@ -157,5 +157,5 @@ class IngredientViewSet(TagViewSet):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
     filter_backends = (DjangoFilterBackend, filters.SearchFilter)
-    search_fields = ('name',)
+    search_fields = ('^name',)
     pagination_class = None
