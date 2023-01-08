@@ -170,7 +170,6 @@ GET http://host/api/recipes/1/
     "cooking_time": 25
 }
 ```
-```
 Добавить рецепт в избранное:
 ```
 POST http://host/api/recipes/1/favorite/
