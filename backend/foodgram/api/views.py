@@ -1,6 +1,5 @@
 from rest_framework import viewsets, mixins, status
-from rest_framework.decorators import api_view
-from django.contrib.auth.decorators import login_required
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_multiple_serializer import ReadWriteSerializerMixin
@@ -45,7 +44,8 @@ class RecipeViewSet(ReadWriteSerializerMixin, viewsets.ModelViewSet):
         serializer.save(author=self.request.user)
 
 
-@login_required
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def download_shopping_cart(request):
     """Скачивает список покупок с необходимыми ингридиентами в формате .txt"""
     response = HttpResponse(content_type='text/plain, charset=utf8')
