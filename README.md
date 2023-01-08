@@ -47,8 +47,7 @@ sudo chmod +x /usr/local/bin/docker-compose
 ```
 cat ~/.ssh/id_rsa
 ```
-Замените в файле nginx.conf "server_name" на соответствующий вашему адресу.
-```
+Замените в файле nginx.conf "server_name" на соответствующий вашему адресу. <br />
 Скопируйте файлы docker-compose.yaml, nginx.conf и папку docs/ из проекта на сервер:
 ```
 scp docker-compose.yaml <username>@<host>:/home/<username>/docker-compose.yaml
