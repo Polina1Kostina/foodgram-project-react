@@ -36,7 +36,7 @@ class AuthorSerializer(serializers.HyperlinkedModelSerializer):
             is_subscribed = user.subscrib.filter(
                 subscription=obj.id).exists()
             return is_subscribed
-        except TypeError:
+        except Exception:
             return False
 
     class Meta:
@@ -60,7 +60,7 @@ class RecipeReadSerializer(serializers.ModelSerializer):
             is_favorited = user.userfavorite.filter(
                 recipe=obj.id).exists()
             return is_favorited
-        except TypeError:
+        except Exception:
             return False
 
     def get_is_in_shopping_cart(self, obj):
@@ -69,7 +69,7 @@ class RecipeReadSerializer(serializers.ModelSerializer):
             is_in_shopping_cart = user.shopuser.filter(
                 recipe=obj.id).exists()
             return is_in_shopping_cart
-        except TypeError:
+        except Exception:
             return False
 
     class Meta:
