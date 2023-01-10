@@ -97,9 +97,9 @@ sudo docker-compose exec web python manage.py createsuperuser
 ```
 sudo docker-compose exec web python manage.py collectstatic --no-input
 ```
-Если вы хотите наполнить базу данными готовым списком ингредиентов:
+Если вы хотите наполнить базу данными из фикстур:
 ```
-sudo docker-compose exec web python manage.py load_data
+sudo docker-compose exec web python manage.py loaddata app/data/ingredients.json recipes.ingredient
 ```
 Запустить контейнеры:
 ```

@@ -98,27 +98,27 @@ class RecipeWriteSerializer(RecipeReadSerializer):
                     f'Ингридиент с id-{ing_id} не найден')
             return value
 
+    @transaction.atomic
     def create(self, validated_data):
         ingredients_data = validated_data.pop('ingridientrecipe_set')
         tags_data = validated_data.pop('tags')
-        with transaction.atomic():
-            sid = transaction.savepoint()
-            try:
-                recipe = Recipe.objects.create(**validated_data)
-                for tag_data in tags_data:
-                    TagRecipe.objects.create(tag_id=tag_data.id, recipe=recipe)
-                for ingredient_data in ingredients_data:
-                    ingredients_id = ingredient_data.pop('ingredients')['id']
-                    IngridientRecipe.objects.create(
-                        recipe_id=recipe.id,
-                        ingredients_id=ingredients_id,
-                        **ingredient_data)
-                return recipe
-            except ValidationError as ex:
-                transaction.savepoint_rollback(sid)
-                raise serializers.ValidationError(f'Ошибка:{str(ex)}')
-            else:
-                transaction.savepoint_commit(sid)
+        sid = transaction.savepoint()
+        try:
+            recipe = Recipe.objects.create(**validated_data)
+            for tag_data in tags_data:
+                TagRecipe.objects.create(tag_id=tag_data.id, recipe=recipe)
+            for ingredient_data in ingredients_data:
+                ingredients_id = ingredient_data.pop('ingredients')['id']
+                IngridientRecipe.objects.create(
+                    recipe_id=recipe.id,
+                    ingredients_id=ingredients_id,
+                    **ingredient_data)
+            return recipe
+        except ValidationError as ex:
+            transaction.savepoint_rollback(sid)
+            raise serializers.ValidationError(f'Ошибка:{str(ex)}')
+        else:
+            transaction.savepoint_commit(sid)
 
     def update(self, instance, validated_data):
         instance.image = validated_data.get('image', instance.image)
@@ -146,7 +146,7 @@ class RecipeWriteSerializer(RecipeReadSerializer):
 class RecipeViewSerializer(serializers.ModelSerializer):
     id = serializers.ReadOnlyField()
     name = serializers.ReadOnlyField()
-    image = serializers.URLField(read_only=True)
+    image = Base64ImageField()
     cooking_time = serializers.ReadOnlyField()
 
     class Meta:

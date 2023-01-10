@@ -88,8 +88,10 @@ def shopping_cart(request, recipe_id):
                 serializer_view.data, status=status.HTTP_201_CREATED)
 
     elif request.method == 'DELETE':
-        get_object_or_404(ShoppingCart, recipe_id=recipe_id).delete()
-        return Response()
+        get_object_or_404(
+            ShoppingCart, recipe_id=recipe_id,
+            user=request.user).delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 @api_view(['DELETE', 'POST'])
@@ -115,8 +117,10 @@ def favorite(request, recipe_id):
                 serializer_view.data, status=status.HTTP_201_CREATED)
 
     elif request.method == 'DELETE':
-        get_object_or_404(FavoriteRecipe, recipe_id=recipe_id).delete()
-        return Response()
+        get_object_or_404(
+            FavoriteRecipe, recipe_id=recipe_id,
+            user=request.user).delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class SubscriptionReadViewSet(viewsets.ReadOnlyModelViewSet):
@@ -125,7 +129,7 @@ class SubscriptionReadViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = [IsAuthenticated, ]
 
     def get_queryset(self):
-        new_queryset = get_list_or_404(Subscription, user=self.request.user)
+        new_queryset = Subscription.objects.filter(user=self.request.user)
         return new_queryset
 
 
@@ -146,7 +150,7 @@ def subscription(request, subscription_id):
         get_object_or_404(
             Subscription, subscription_id=subscription_id,
             user=request.user).delete()
-        return Response()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class IngredientViewSet(TagViewSet):
